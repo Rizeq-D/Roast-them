@@ -24,7 +24,7 @@ import coil.compose.rememberAsyncImagePainter
 
 
 @Composable
-fun RecipeScreen() {
+fun RecipeScreen(modifier: Modifier = Modifier) {
     val recipeViewModel : MainViewModel = viewModel()
     val viewStat by recipeViewModel.categoriesState
 
@@ -35,7 +35,7 @@ fun RecipeScreen() {
             }
 
             viewStat.error != null -> {
-                Text("Error occurred")
+                Text(viewStat.error!!)
             }
 
             else -> {
