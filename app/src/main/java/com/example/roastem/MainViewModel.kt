@@ -19,12 +19,18 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = recipeService.getCategories()
-                _categoriesState.value = _categoriesState.value.copy(
-                    list = response.categories,
-                    loading = false,
-                    error = null
-                )
-
+                if (response.isSuccessful) {
+                    _categoriesState.value = _categoriesState.value.copy(
+                        list = response.body()?.categories ?: emptyList(),
+                        loading = false,
+                        error = null
+                    )
+                }else{
+                    _categoriesState.value = _categoriesState.value.copy(
+                        loading = false,
+                        error = "Error fetching Categories: ${response.message()}"
+                    )
+                }
             }catch (e : Exception) {
                 _categoriesState.value = _categoriesState.value.copy(
                     loading = false,
